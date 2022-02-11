@@ -2,6 +2,10 @@ package com.company;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class Main {
@@ -64,7 +68,35 @@ public class Main {
         int listeSum = sumString(stringlist, stringFunction);
         System.out.println(listeSum);
 
-        //Leg med stream - sjov og ballade
 
+
+        //test
+        double dd = Math.random();
+        Long ii = Math.round(dd * 100);
+        System.out.println(ii);
+        //test slut
+
+
+        //Leg med stream - sjov og ballade
+        Supplier<Double> randomGenerator = () -> Math.random();
+        Stream<Double> doubles = Stream.generate(randomGenerator);
+
+        Function<Double, Long> doubleRound = d -> Math.round(d*100);
+        Predicate<Long> keepOrNot = l -> l % 2 == 0;
+        Consumer<Long> print = i -> System.out.println("Random=" + i);
+        Stream<Long> generatedValues = Stream.generate(randomGenerator).map(doubleRound);
+
+        Stream<Long> keptValues;
+       // keptValues = generatedValues.filter(keepOrNot); //Bliver ved og ved med at køre
+        keptValues = generatedValues.filter(keepOrNot).limit(12);
+        keptValues.forEach(print);
+
+        // Kan ikke køre nedenstående når linje 92 er aktiv - fordi den lukker streamen - idet print er consumer
+        //double sumFunction = keptValues.mapToDouble(d -> d).sum();
+        //System.out.println(sumFunction);
+
+        // Supplier = æbletræ, consumer = spiser æblet, Predicate = true or not. Csonsumer lukker streamen
+
+        //Opgave 2 Lav ovenstående opgave om random generede task til en linje kode
     }
 }
