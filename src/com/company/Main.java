@@ -2,6 +2,7 @@ package com.company;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -9,6 +10,18 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class Main {
+
+    // Brug af generic : parameter overfører en type
+    public static <T> void out(T content) {
+        System.out.println(content);
+    }
+
+    public static <T> void forEach(List<T> list, Consumer<T> consumer) {
+        //list.foreach(consumer);
+        for (T t : list) {
+            consumer.accept(t);
+        }
+    }
 
     public static void out(ZeroArgument zeroArgument) {
         zeroArgument.myFunction();
@@ -47,6 +60,35 @@ public class Main {
         TwoArgument multiply = (x,y) -> x*y;
         int total = multiply.myFunction(5,6);
         System.out.println(total);
+
+        //Opgave G7
+        List<String> G7 = Arrays.asList("USA", "Japan", "France", "Germany", "Italy", "U.K", "Canada");
+
+        // 3 måder at skrive arrayen ud hvor de er omdannet til caps
+        //Rasmus' udgave
+        System.out.println(G7.toString().toUpperCase());
+
+        // Eriks udgave
+        Stream<String> collToStream = G7.stream();
+        collToStream = collToStream.map(x -> x.toUpperCase(Locale.ROOT));
+        collToStream.forEach(x -> System.out.println(x));
+
+        //Alternativ til Eriks linje 19 -> linje 24
+        Stream<String> collToStream2 = G7.stream();
+        collToStream2 = collToStream2.map(String::toUpperCase);
+        collToStream2.forEach(x -> System.out.println(x));
+
+
+
+        //Brug af Consumer
+        Consumer<String> consumer = x -> System.out.println(x.toLowerCase(Locale.ROOT));
+        consumer.accept("FÆRDIG!");
+
+        Consumer<Integer> consumerInteger = x -> System.out.println("x=" + x);
+        consumerInteger.accept(10);
+
+        List<Integer> list = Arrays.asList(1,2,3,4,5,33);
+        forEach(list, consumerInteger);
 
         //Beregning af valuta
         //Tal og Kurs heltal
