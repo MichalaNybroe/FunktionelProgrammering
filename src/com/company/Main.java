@@ -73,11 +73,10 @@ public class Main {
         collToStream = collToStream.map(x -> x.toUpperCase(Locale.ROOT));
         collToStream.forEach(x -> System.out.println(x));
 
-        //Alternativ til Eriks linje 19 -> linje 24
+        //Alternativ til Eriks linje 73 -> linje 78
         Stream<String> collToStream2 = G7.stream();
         collToStream2 = collToStream2.map(String::toUpperCase);
         collToStream2.forEach(x -> System.out.println(x));
-
 
 
         //Brug af Consumer
@@ -133,7 +132,7 @@ public class Main {
         keptValues = generatedValues.filter(keepOrNot).limit(12);
         keptValues.forEach(print);
 
-        // Kan ikke køre nedenstående når linje 92 er aktiv - fordi den lukker streamen - idet print er consumer
+        // Kan ikke køre nedenstående når linje 133 er aktiv - fordi den lukker streamen - idet print er consumer
         //double sumFunction = keptValues.mapToDouble(d -> d).sum();
         //System.out.println(sumFunction);
 
