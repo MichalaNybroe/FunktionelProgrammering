@@ -1,12 +1,14 @@
 package com.company;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Main {
@@ -35,6 +37,13 @@ public class Main {
         int sum = 0;
         for (int t: list) {
             sum += multiply.myFunction(t,exchangeRate);
+        }
+        return sum;
+    }
+    static double valutaBeregner(List<Integer> list, TwoArgumentDouble multiply, double exchangerate) {
+        double sum = 0;
+        for(int t :list) {
+            sum += multiply.myFunction(t, exchangerate);
         }
         return sum;
     }
@@ -73,7 +82,7 @@ public class Main {
         collToStream = collToStream.map(x -> x.toUpperCase(Locale.ROOT));
         collToStream.forEach(x -> System.out.println(x));
 
-        //Alternativ til Eriks linje 73 -> linje 78
+        //Alternativ til Eriks linje 80 til linje 85
         Stream<String> collToStream2 = G7.stream();
         collToStream2 = collToStream2.map(String::toUpperCase);
         collToStream2.forEach(x -> System.out.println(x));
@@ -98,9 +107,9 @@ public class Main {
         System.out.println(sum);
 
         //Opgave lav valuta regner med både int og double
-
-
-
+        TwoArgumentDouble twoArgumentDouble = (x,y) -> x*y;
+        double dSum = valutaBeregner(dollars, twoArgumentDouble, 6.5);
+        System.out.println(dSum);
 
         // Tag collection af strenge og omdan til int
         List<String> stringlist = Arrays.asList("Hejsa", "du", "er", "sød");
@@ -120,7 +129,7 @@ public class Main {
 
         //Leg med stream - sjov og ballade
         Supplier<Double> randomGenerator = () -> Math.random();
-        Stream<Double> doubles = Stream.generate(randomGenerator);
+        //Stream<Double> doubles = Stream.generate(randomGenerator);
 
         Function<Double, Long> doubleRound = d -> Math.round(d*100);
         Predicate<Long> keepOrNot = l -> l % 2 == 0;
@@ -139,5 +148,30 @@ public class Main {
         // Supplier = æbletræ, consumer = spiser æblet, Predicate = true or not. Csonsumer lukker streamen
 
         //Opgave 2 Lav ovenstående opgave om random generede task til en linje kode
+        Stream
+                .generate(Math::random)
+                .map(d -> Math.round(d*100))
+                .filter(l -> l % 2 == 0)
+                .limit(12)
+                .forEach(i -> System.out.println("Random=" + i));
+
+        //Opgave 3: Udskriv alle tirsdage i marts måned 2022
+
+        int lenghtOfMonth = YearMonth.of(2022, 3).lengthOfMonth();
+        Collection<LocalDate> days = new ArrayList<>();
+
+        for (int i = 1; i < lenghtOfMonth+1; i++) {
+            days.add((YearMonth.of(2022, 3).atDay(i)));
+        }
+
+        Predicate<LocalDate> checkForTuesdays = x -> x.getDayOfWeek().equals(DayOfWeek.TUESDAY);
+        days.stream().filter(checkForTuesdays).forEach(i -> System.out.println("Thuesday=" + i));
+
+        //Opgave 3 clean
+        IntStream
+                .range(1, YearMonth.of(2022, 3).lengthOfMonth())
+                .mapToObj(i -> YearMonth.of(2022, 3).atDay(i))
+                .filter(x -> x.getDayOfWeek().equals(DayOfWeek.TUESDAY))
+                .forEach(i -> System.out.println("Thuesday=" + i));
     }
 }
