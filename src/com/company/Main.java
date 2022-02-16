@@ -173,5 +173,21 @@ public class Main {
                 .mapToObj(i -> YearMonth.of(2022, 3).atDay(i))
                 .filter(x -> x.getDayOfWeek().equals(DayOfWeek.TUESDAY))
                 .forEach(i -> System.out.println("Thuesday=" + i));
+
+        Stream<LocalDate> thuesdaysInMonth = getThuesdaysInMonth(2022, 3);
+        thuesdaysInMonth.forEach(i -> System.out.println("Thuesday = " + i));
     }
+
+    public static Stream<LocalDate> getThuesdaysInMonth(int year, int month) {
+        return IntStream
+                .range(1, YearMonth.of(year, month).lengthOfMonth())
+                .mapToObj(i -> YearMonth.of(year, month).atDay(i))
+                .filter(x -> x.getDayOfWeek().equals(DayOfWeek.TUESDAY));
+    }
+
+    //lav det så man har en metode til at modtage alle dage i en måned, en til filtrering af dem til tirsdage og en til noget
+    //med weekdays. se Eriks kode på github.
+
+
+    //findes en parrallel stream som kan udføre flere funktioner på en stream samtidig.
 }
